@@ -1,0 +1,22 @@
+services:
+  hit-counter:
+    build:
+      context: .
+      dockerfile: "Dockerfile"
+    environment:
+      PORT: 8080
+    restart: unless-stopped
+    ports:
+      - "$PORT:$PORT"
+    depends_on:
+      - "redis"
+    develop:
+      watch:
+        - action: rebuild
+          path: .
+          target: /app
+  redis:
+    image: "redis:alpine"
+    restart: unless-stopped
+    # ports:
+    #   - "6379:6379"
